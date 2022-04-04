@@ -28,6 +28,13 @@ namespace APIUtopiaAMH.Controllers
             return platos;
         }
 
+        [HttpGet]
+        [Route("[action]/{idplato}")]
+        public ActionResult<Plato> GetPlatoId(int idplato)
+        {
+            return this.repo.FindPlato(idplato);
+        }
+
         [HttpPost]
         [Route("[action]")]
         public ActionResult CrearPlato(Plato plato)

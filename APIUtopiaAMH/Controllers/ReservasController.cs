@@ -28,6 +28,13 @@ namespace APIUtopiaAMH.Controllers
             return reservas;
         }
 
+        [HttpGet]
+        [Route("[action]/{nombre}")]
+        public ActionResult<Reserva> GetReservaNombre(string nombre)
+        {
+            return this.repo.FindReserva(nombre);
+        }
+
         [HttpPost]
         [Route("[action]")]
         public ActionResult CrearReserva(string nombre, string telefono, string email, int personas, DateTime fecha)

@@ -28,6 +28,13 @@ namespace APIUtopiaAMH.Controllers
             return juegos;
         }
 
+        [HttpGet]
+        [Route("[action]/{idjuego}")]
+        public ActionResult<Juego> GetJuegoId(int idjuego)
+        {
+            return this.repo.FindJuego(idjuego);
+        }
+
         [HttpPost]
         [Route("[action]")]
         public ActionResult CrearJuego(Juego juego)
