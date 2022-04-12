@@ -30,7 +30,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpGet]
         [Route("[action]/{idjuego}")]
-        public ActionResult<Juego> GetJuegoId(int idjuego)
+        public ActionResult<Juego> FindJuego(int idjuego)
         {
             return this.repo.FindJuego(idjuego);
         }

@@ -30,7 +30,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpGet]
         [Route("[action]/{idplato}")]
-        public ActionResult<Plato> GetPlatoId(int idplato)
+        public ActionResult<Plato> FindPlato(int idplato)
         {
             return this.repo.FindPlato(idplato);
         }

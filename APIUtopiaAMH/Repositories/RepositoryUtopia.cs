@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Net.Http.Headers;
 using NugetUtopia;
 using Microsoft.EntityFrameworkCore;
+using APIUtopiaAMH.Helpers;
 
 namespace APIUtopiaAMH.Repositories
 {
@@ -63,6 +64,21 @@ namespace APIUtopiaAMH.Repositories
         #endregion
 
         #region Metodos LogIn
+        public int RegistrarUsuario(string nombre, string email, string password, string imagen, string rol)
+        {
+            int idusuario = this.GetMaxIdUsuario();
+            Usuario usuario = new Usuario();
+            usuario.IdUsuario = idusuario;
+            usuario.Nombre = nombre;
+            usuario.Email = email;
+            usuario.Salt = HelperCryptography.GenerateSalt();
+            usuario.Password = HelperCryptography.EncriptarPassword(password, usuario.Salt);
+            usuario.Imagen = idusuario + "_" + imagen;
+            usuario.Rol = rol;
+            this.context.Usuarios.Add(usuario);
+            this.context.SaveChanges();
+            return idusuario;
+        }
         #endregion
 
         #region Metodos Platos

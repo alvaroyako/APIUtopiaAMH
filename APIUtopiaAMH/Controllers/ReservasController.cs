@@ -30,7 +30,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpGet]
         [Route("[action]/{nombre}")]
-        public ActionResult<Reserva> GetReservaNombre(string nombre)
+        public ActionResult<Reserva> FindReserva(string nombre)
         {
             return this.repo.FindReserva(nombre);
         }
