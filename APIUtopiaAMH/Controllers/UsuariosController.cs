@@ -24,14 +24,22 @@ namespace APIUtopiaAMH.Controllers
         [Route("[action]")]
         public ActionResult RegistrarUsuario(Usuario usuario)
         {
-            this.repo.RegistrarUsuario(
+            bool respuesta=this.repo.RegistrarUsuario(
                 usuario.Nombre,
                 usuario.Email,
-                usuario.Password.ToString(),
+                usuario.PasswordString,
                 usuario.Imagen,
                 "cliente"
                 );
-            return Ok();
+            if (respuesta == false)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                return Ok();
+            }
+            
         }
     }
 }

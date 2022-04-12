@@ -64,20 +64,31 @@ namespace APIUtopiaAMH.Repositories
         #endregion
 
         #region Metodos LogIn
-        public int RegistrarUsuario(string nombre, string email, string password, string imagen, string rol)
+        public bool RegistrarUsuario(string nombre, string email, string password, string imagen, string rol)
         {
-            int idusuario = this.GetMaxIdUsuario();
-            Usuario usuario = new Usuario();
-            usuario.IdUsuario = idusuario;
-            usuario.Nombre = nombre;
-            usuario.Email = email;
-            usuario.Salt = HelperCryptography.GenerateSalt();
-            usuario.Password = HelperCryptography.EncriptarPassword(password, usuario.Salt);
-            usuario.Imagen = idusuario + "_" + imagen;
-            usuario.Rol = rol;
-            this.context.Usuarios.Add(usuario);
-            this.context.SaveChanges();
-            return idusuario;
+            var consulta = from datos in this.context.Usuarios
+                           where datos.Nombre == nombre
+                           select datos;
+            if (consulta.FirstOrDefault() != null)
+            {
+                return false;
+            }
+            else
+            {
+                int idusuario = this.GetMaxIdUsuario();
+                Usuario usuario = new Usuario();
+                usuario.IdUsuario = idusuario;
+                usuario.Nombre = nombre;
+                usuario.Email = email;
+                usuario.Salt = HelperCryptography.GenerateSalt();
+                usuario.Password = HelperCryptography.EncriptarPassword(password, usuario.Salt);
+                usuario.Imagen = idusuario + "_" + imagen;
+                usuario.Rol = rol;
+                this.context.Usuarios.Add(usuario);
+                this.context.SaveChanges();
+                return true;
+            }
+            
         }
         #endregion
 
