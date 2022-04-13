@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using NugetUtopia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace APIUtopiaAMH.Controllers
@@ -49,6 +51,17 @@ namespace APIUtopiaAMH.Controllers
         public ActionResult<Usuario> FindUsuario(int idusuario)
         {
             return this.repo.FindUsuario(idusuario);
+        }
+
+        [HttpGet]
+        [Route("[action]")]
+        [Authorize]
+        public ActionResult<Usuario> PerfilUsuario()
+        {
+            List<Claim> claims = HttpContext.User.Claims.ToList();
+            string jsonUsuario = claims.SingleOrDefault(z => z.Type == "UserData").Value;
+            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(jsonUsuario);
+            return usuario;
         }
 
         [HttpPost]
