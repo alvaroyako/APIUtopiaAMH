@@ -1,4 +1,5 @@
 ﻿using APIUtopiaAMH.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetUtopia;
@@ -18,6 +19,13 @@ namespace APIUtopiaAMH.Controllers
         public UsuariosController(RepositoryUtopia repo)
         {
             this.repo = repo;
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult<List<Usuario>> GetUsuarios()
+        {
+            return this.repo.GetUsuarios();
         }
 
         [HttpPost]
@@ -40,6 +48,28 @@ namespace APIUtopiaAMH.Controllers
                 return Ok();
             }
             
+        }
+
+        [HttpGet]
+        [Route("[action]/{idusuario}")]
+        public ActionResult<Usuario> FindUsuario(int idusuario)
+        {
+            return this.repo.FindUsuario(idusuario);
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        public ActionResult<Usuario> ExisteUsuario(string email, string password)
+        {
+            Usuario usu = this.repo.ExisteUsuario(email, password);
+            if (usu !=null)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

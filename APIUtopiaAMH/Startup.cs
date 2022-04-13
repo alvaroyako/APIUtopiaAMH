@@ -1,4 +1,5 @@
 using APIUtopiaAMH.Data;
+using APIUtopiaAMH.Helpers;
 using APIUtopiaAMH.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -32,6 +33,10 @@ namespace APIUtopiaAMH
             string cadena = this.Configuration.GetConnectionString("cadenasql");
             services.AddTransient<RepositoryUtopia>();
             services.AddDbContext<ContextUtopia>(options => options.UseSqlServer(cadena));
+            HelperOAuthToken helper = new HelperOAuthToken(this.Configuration);
+            services.AddAuthentication(helper.GetAuthenticationOptions())
+                .AddJwtBearer(helper.GetJwtOptions());
+            services.AddTransient<HelperOAuthToken>(x => helper);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -58,6 +63,7 @@ namespace APIUtopiaAMH
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

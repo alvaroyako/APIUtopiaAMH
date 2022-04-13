@@ -258,5 +258,52 @@ namespace APIUtopiaAMH.Repositories
             return consulta.ToList();
         }
         #endregion
+
+        #region Metodos Usuarios
+        //Metodo para buscar Usuario
+        public Usuario FindUsuario(int idusuario)
+        {
+            return this.context.Usuarios.SingleOrDefault(z => z.IdUsuario == idusuario);
+        }
+
+        //Comprueba si existe el usuario
+        public Usuario ExisteUsuario(string email, string password)
+        {
+            var consulta = from datos in this.context.Usuarios
+                           where datos.Email == email
+                           select datos;
+
+            if (consulta == null)
+            {
+                return null;
+            }
+            else
+            {
+                Usuario usuario = consulta.FirstOrDefault();
+                byte[] passUsuario = usuario.Password;
+                string salt = usuario.Salt;
+                byte[] temporal = HelperCryptography.EncriptarPassword(password, salt);
+                bool respuesta = HelperCryptography.CompareArrays(passUsuario, temporal);
+
+                if (respuesta)
+                {
+                    return usuario;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+
+        #endregion
+
+        #region Prueba
+        public List<Usuario> GetUsuarios()
+        {
+            return this.context.Usuarios.ToList();
+        }
+        #endregion
     }
 }
