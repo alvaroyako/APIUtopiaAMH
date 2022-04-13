@@ -299,11 +299,5 @@ namespace APIUtopiaAMH.Repositories
 
         #endregion
 
-        #region Prueba
-        public List<Usuario> GetUsuarios()
-        {
-            return this.context.Usuarios.ToList();
-        }
-        #endregion
     }
 }

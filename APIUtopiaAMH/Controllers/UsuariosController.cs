@@ -21,13 +21,6 @@ namespace APIUtopiaAMH.Controllers
             this.repo = repo;
         }
 
-        [HttpGet]
-        [Authorize]
-        public ActionResult<List<Usuario>> GetUsuarios()
-        {
-            return this.repo.GetUsuarios();
-        }
-
         [HttpPost]
         [Route("[action]")]
         public ActionResult RegistrarUsuario(Usuario usuario)
@@ -52,6 +45,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpGet]
         [Route("[action]/{idusuario}")]
+        [Authorize]
         public ActionResult<Usuario> FindUsuario(int idusuario)
         {
             return this.repo.FindUsuario(idusuario);

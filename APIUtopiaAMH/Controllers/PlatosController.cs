@@ -1,4 +1,5 @@
 ﻿using APIUtopiaAMH.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetUtopia;
@@ -37,6 +38,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize]
         public ActionResult CrearPlato(Plato plato)
         {
             this.repo.CrearPlato(plato);
@@ -45,6 +47,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpPut]
         [Route("[action]")]
+        [Authorize]
         public ActionResult UpdatePlato(Plato plato)
         {
             this.repo.EditarPlato(
@@ -60,6 +63,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpDelete]
         [Route("[action]/{idplato}")]
+        [Authorize]
         public void DeletePlato(int idplato)
         {
             this.repo.DeletePlato(idplato);

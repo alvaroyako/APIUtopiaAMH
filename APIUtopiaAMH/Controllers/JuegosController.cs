@@ -1,4 +1,5 @@
 ﻿using APIUtopiaAMH.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetUtopia;
@@ -37,6 +38,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize]
         public ActionResult CrearJuego(Juego juego)
         {
             this.repo.CrearJuego(juego);
@@ -45,6 +47,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpPut]
         [Route("[action]")]
+        [Authorize]
         public ActionResult UpdateJuego(Juego juego)
         {
             this.repo.EditarJuego(
@@ -60,6 +63,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpDelete]
         [Route("[action]/{idjuego}")]
+        [Authorize]
         public void DeleteJuego(int idjuego)
         {
             this.repo.DeleteJuego(idjuego);

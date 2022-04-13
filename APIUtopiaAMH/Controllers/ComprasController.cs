@@ -1,4 +1,5 @@
 ﻿using APIUtopiaAMH.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetUtopia;
@@ -22,6 +23,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpGet]
         [Route("[action]/{idusuario}")]
+        [Authorize]
         public ActionResult <List<Compra>> BuscarComprasUsuario(int idusuario)
         {
             List<Compra> compras = this.repo.BuscarCompras(idusuario);
@@ -30,6 +32,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize]
         public ActionResult CreateCompra(Compra compra)
         {
             this.repo.CreateCompras(compra);

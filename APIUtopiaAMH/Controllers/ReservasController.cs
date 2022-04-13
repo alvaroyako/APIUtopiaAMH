@@ -1,4 +1,5 @@
 ﻿using APIUtopiaAMH.Repositories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using NugetUtopia;
@@ -22,6 +23,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpGet]
         [Route("[action]")]
+        [Authorize]
         public ActionResult<List<Reserva>> GetReservas()
         {
             List<Reserva> reservas = this.repo.GetReservas();
@@ -37,6 +39,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpPost]
         [Route("[action]")]
+        [Authorize]
         public ActionResult CrearReserva(string nombre, string telefono, string email, int personas, DateTime fecha)
         {
             Reserva res = new Reserva();
@@ -52,6 +55,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpPut]
         [Route("[action]")]
+        [Authorize]
         public ActionResult UpdateReserva(Reserva reserva)
         {
             this.repo.EditarReserva(
@@ -67,6 +71,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpDelete]
         [Route("[action]/{nombre}")]
+        [Authorize]
         public void DeleteReserva(string nombre)
         {
             this.repo.DeleteReserva(nombre);
