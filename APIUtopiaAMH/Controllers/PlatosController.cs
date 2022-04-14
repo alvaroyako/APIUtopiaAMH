@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using NugetUtopia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace APIUtopiaAMH.Controllers
@@ -41,8 +43,19 @@ namespace APIUtopiaAMH.Controllers
         [Authorize]
         public ActionResult CrearPlato(Plato plato)
         {
-            this.repo.CrearPlato(plato);
-            return Ok();
+            List<Claim> claims = HttpContext.User.Claims.ToList();
+            string json = claims.SingleOrDefault(x => x.Type == "UserData").Value;
+            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(json);
+            if (usuario.Rol == "admin")
+            {
+                this.repo.CrearPlato(plato);
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
+            
         }
 
         [HttpPut]
@@ -50,7 +63,12 @@ namespace APIUtopiaAMH.Controllers
         [Authorize]
         public ActionResult UpdatePlato(Plato plato)
         {
-            this.repo.EditarPlato(
+            List<Claim> claims = HttpContext.User.Claims.ToList();
+            string json = claims.SingleOrDefault(x => x.Type == "UserData").Value;
+            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(json);
+            if (usuario.Rol == "admin")
+            {
+                this.repo.EditarPlato(
                 plato.IdPlato,
                 plato.Nombre,
                 plato.Descripcion,
@@ -58,15 +76,31 @@ namespace APIUtopiaAMH.Controllers
                 plato.Precio,
                 plato.Foto
                 );
-            return Ok();
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpDelete]
         [Route("[action]/{idplato}")]
         [Authorize]
-        public void DeletePlato(int idplato)
+        public ActionResult DeletePlato(int idplato)
         {
-            this.repo.DeletePlato(idplato);
+            List<Claim> claims = HttpContext.User.Claims.ToList();
+            string json = claims.SingleOrDefault(x => x.Type == "UserData").Value;
+            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(json);
+            if (usuario.Rol == "admin")
+            {
+                this.repo.DeletePlato(idplato);
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
     }
 }

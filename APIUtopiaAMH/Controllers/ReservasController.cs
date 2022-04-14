@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using NugetUtopia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace APIUtopiaAMH.Controllers
@@ -42,15 +44,25 @@ namespace APIUtopiaAMH.Controllers
         [Authorize]
         public ActionResult CrearReserva(string nombre, string telefono, string email, int personas, DateTime fecha)
         {
-            Reserva res = new Reserva();
-            res.Nombre = nombre;
-            res.Telefono = telefono;
-            res.Email = email;
-            res.Personas = personas;
-            res.Fecha = fecha.ToShortDateString();
-            res.Hora = fecha.ToShortTimeString();
-            this.repo.CrearReserva(res);
-            return Ok();
+            List<Claim> claims = HttpContext.User.Claims.ToList();
+            string json = claims.SingleOrDefault(x => x.Type == "UserData").Value;
+            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(json);
+            if (usuario.Rol == "admin")
+            {
+                Reserva res = new Reserva();
+                res.Nombre = nombre;
+                res.Telefono = telefono;
+                res.Email = email;
+                res.Personas = personas;
+                res.Fecha = fecha.ToShortDateString();
+                res.Hora = fecha.ToShortTimeString();
+                this.repo.CrearReserva(res);
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpPut]
@@ -58,7 +70,12 @@ namespace APIUtopiaAMH.Controllers
         [Authorize]
         public ActionResult UpdateReserva(Reserva reserva)
         {
-            this.repo.EditarReserva(
+            List<Claim> claims = HttpContext.User.Claims.ToList();
+            string json = claims.SingleOrDefault(x => x.Type == "UserData").Value;
+            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(json);
+            if (usuario.Rol == "admin")
+            {
+                this.repo.EditarReserva(
                 reserva.Nombre,
                 reserva.Telefono,
                 reserva.Email,
@@ -66,15 +83,31 @@ namespace APIUtopiaAMH.Controllers
                 reserva.Fecha,
                 reserva.Hora
                 );
-            return Ok();
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpDelete]
         [Route("[action]/{nombre}")]
         [Authorize]
-        public void DeleteReserva(string nombre)
+        public ActionResult DeleteReserva(string nombre)
         {
-            this.repo.DeleteReserva(nombre);
+            List<Claim> claims = HttpContext.User.Claims.ToList();
+            string json = claims.SingleOrDefault(x => x.Type == "UserData").Value;
+            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(json);
+            if (usuario.Rol == "admin")
+            {
+                this.repo.DeleteReserva(nombre);
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
     }
 }

@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using NugetUtopia;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace APIUtopiaAMH.Controllers
@@ -41,8 +43,18 @@ namespace APIUtopiaAMH.Controllers
         [Authorize]
         public ActionResult CrearJuego(Juego juego)
         {
-            this.repo.CrearJuego(juego);
-            return Ok();
+            List<Claim> claims = HttpContext.User.Claims.ToList();
+            string json = claims.SingleOrDefault(x => x.Type == "UserData").Value;
+            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(json);
+            if (usuario.Rol == "admin")
+            {
+                this.repo.CrearJuego(juego);
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpPut]
@@ -50,7 +62,12 @@ namespace APIUtopiaAMH.Controllers
         [Authorize]
         public ActionResult UpdateJuego(Juego juego)
         {
-            this.repo.EditarJuego(
+            List<Claim> claims = HttpContext.User.Claims.ToList();
+            string json = claims.SingleOrDefault(x => x.Type == "UserData").Value;
+            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(json);
+            if (usuario.Rol == "admin")
+            {
+                this.repo.EditarJuego(
                 juego.IdJuego,
                 juego.Nombre,
                 juego.Descripcion,
@@ -58,15 +75,31 @@ namespace APIUtopiaAMH.Controllers
                 juego.Precio,
                 juego.Foto
                 );
-            return Ok();
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
 
         [HttpDelete]
         [Route("[action]/{idjuego}")]
         [Authorize]
-        public void DeleteJuego(int idjuego)
+        public ActionResult DeleteJuego(int idjuego)
         {
-            this.repo.DeleteJuego(idjuego);
+            List<Claim> claims = HttpContext.User.Claims.ToList();
+            string json = claims.SingleOrDefault(x => x.Type == "UserData").Value;
+            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(json);
+            if (usuario.Rol == "admin")
+            {
+                this.repo.DeleteJuego(idjuego);
+                return Ok();
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
     }
 }
