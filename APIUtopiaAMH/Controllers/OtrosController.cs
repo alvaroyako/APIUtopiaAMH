@@ -22,7 +22,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        //[Authorize]
+        [Authorize]
         public ActionResult<int> GetMaxIdUsuarios()
         {
             int idusuario = this.repo.GetMaxIdUsuario();
@@ -31,7 +31,7 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        //[Authorize]
+        [Authorize]
         public ActionResult<int> GetMaxIdCompras()
         {
             int idcompra = this.repo.GetMaxIdCompra();
