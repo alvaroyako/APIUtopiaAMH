@@ -41,14 +41,8 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        [Authorize]
         public ActionResult CrearReserva(string nombre, string telefono, string email, int personas, string fecha,string hora)
         {
-            List<Claim> claims = HttpContext.User.Claims.ToList();
-            string json = claims.SingleOrDefault(x => x.Type == "UserData").Value;
-            Usuario usuario = JsonConvert.DeserializeObject<Usuario>(json);
-            if (usuario.Rol == "admin")
-            {
                 Reserva res = new Reserva();
                 res.Nombre = nombre;
                 res.Telefono = telefono;
@@ -58,11 +52,6 @@ namespace APIUtopiaAMH.Controllers
                 res.Hora = hora;
                 this.repo.CrearReserva(res);
                 return Ok();
-            }
-            else
-            {
-                return Unauthorized();
-            }
         }
 
         [HttpPut]
