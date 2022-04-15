@@ -38,6 +38,13 @@ namespace APIUtopiaAMH.Controllers
             return this.repo.FindJuego(idjuego);
         }
 
+        [HttpGet]
+        [Route("[action]/{nombrejuego}")]
+        public ActionResult<Juego> BuscarJuegoNombre(string nombrejuego)
+        {
+            return this.repo.BuscarJuegoNombre(nombrejuego);
+        }
+
         [HttpPost]
         [Route("[action]")]
         [Authorize]

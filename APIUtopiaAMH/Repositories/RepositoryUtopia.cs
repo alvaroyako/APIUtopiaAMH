@@ -178,6 +178,12 @@ namespace APIUtopiaAMH.Repositories
             juego.Foto = foto;
             this.context.SaveChanges();
         }
+
+        //Busca juego por nombre
+        public Juego BuscarJuegoNombre(string nombre)
+        {
+            return this.context.Juegos.SingleOrDefault(z => z.Nombre == nombre);
+        }
         #endregion
 
         #region Metodos Reservas
