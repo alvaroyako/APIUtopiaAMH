@@ -50,7 +50,7 @@ namespace APIUtopiaAMH.Repositories
 
         #region Metodos Generales
         //Obtiene el valor del ultimo id que existe en la tabla usuarios
-        private int GetMaxIdUsuario()
+        public int GetMaxIdUsuario()
         {
             if (this.context.Usuarios.Count() == 0)
             {
@@ -225,7 +225,7 @@ namespace APIUtopiaAMH.Repositories
 
         #region Metodos Compras
         //Obtiene el valor del ultimo idcompra que existe en la tabla compras
-        private int GetMaxIdCompra()
+        public int GetMaxIdCompra()
         {
             if (this.context.Compras.Count() == 0)
             {
