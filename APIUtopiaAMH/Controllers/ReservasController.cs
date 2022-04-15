@@ -42,7 +42,7 @@ namespace APIUtopiaAMH.Controllers
         [HttpPost]
         [Route("[action]")]
         [Authorize]
-        public ActionResult CrearReserva(string nombre, string telefono, string email, int personas, DateTime fecha)
+        public ActionResult CrearReserva(string nombre, string telefono, string email, int personas, string fecha,string hora)
         {
             List<Claim> claims = HttpContext.User.Claims.ToList();
             string json = claims.SingleOrDefault(x => x.Type == "UserData").Value;
@@ -54,8 +54,8 @@ namespace APIUtopiaAMH.Controllers
                 res.Telefono = telefono;
                 res.Email = email;
                 res.Personas = personas;
-                res.Fecha = fecha.ToShortDateString();
-                res.Hora = fecha.ToShortTimeString();
+                res.Fecha = fecha;
+                res.Hora = hora;
                 this.repo.CrearReserva(res);
                 return Ok();
             }
