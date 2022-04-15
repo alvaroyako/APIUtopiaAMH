@@ -41,16 +41,9 @@ namespace APIUtopiaAMH.Controllers
 
         [HttpPost]
         [Route("[action]")]
-        public ActionResult CrearReserva(string nombre, string telefono, string email, int personas, string fecha,string hora)
+        public ActionResult CrearReserva(Reserva reserva)
         {
-                Reserva res = new Reserva();
-                res.Nombre = nombre;
-                res.Telefono = telefono;
-                res.Email = email;
-                res.Personas = personas;
-                res.Fecha = fecha;
-                res.Hora = hora;
-                this.repo.CrearReserva(res);
+                this.repo.CrearReserva(reserva);
                 return Ok();
         }
 
