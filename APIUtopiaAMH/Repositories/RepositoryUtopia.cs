@@ -159,6 +159,15 @@ namespace APIUtopiaAMH.Repositories
             return this.context.Juegos.SingleOrDefault(z => z.IdJuego == idjuego);
         }
 
+        //Metodo similar a findjuego pero esta vez devuelve una lista de juegos
+        public List<Juego> BuscarJuegos(List<int> id)
+        {
+            var consulta = from datos in this.context.Juegos
+                           where id.Contains(datos.IdJuego)
+                           select datos;
+            return consulta.ToList();
+        }
+
         //Borra un juego
         public void DeleteJuego(int idjuego)
         {
