@@ -247,7 +247,7 @@ namespace APIUtopiaAMH.Repositories
         public void CreateCompras(Compra compra)
         {
             Compra com = new Compra();
-            com.IdCompra = this.GetMaxIdCompra();
+            com.IdCompra = compra.IdCompra;
             com.IdUsuario = compra.IdUsuario;
             com.Nombre = compra.Nombre;
             this.context.Add(com);
